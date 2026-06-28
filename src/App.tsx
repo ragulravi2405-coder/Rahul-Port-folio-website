@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Sparkles,
-  Edit2,
   Github,
   Linkedin,
   Mail,
@@ -28,6 +27,7 @@ import {
   FileText
 } from "lucide-react";
 import { CustomImages, Project, ChatMessage, Certification, Achievement } from "./types";
+import defaultImages from "../uploaded_images.json";
 
 // Default SVG Fallback Illustrations so the portfolio looks gorgeous immediately
 const SVG_FALLBACKS = {
@@ -422,24 +422,13 @@ export default function App() {
     const saved = localStorage.getItem("rahul_portfolio_images");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return { ...(defaultImages as CustomImages), ...parsed };
       } catch (e) {
         console.error("Failed to load local portfolio photos:", e);
       }
     }
-    return {
-      profile: "",
-      college: "",
-      internship: "",
-      cert_ibm: "",
-      cert_nim: "",
-      cert_csc: "",
-      cert_aws: "",
-      proj_zentora: "",
-      proj_globalchat: "",
-      proj_docmind: "",
-      proj_rideeasy: ""
-    };
+    return defaultImages as CustomImages;
   });
 
   // State to control Customize Mode (ON/OFF)
@@ -719,16 +708,6 @@ export default function App() {
             No Image
           </div>
         )}
-
-        {/* Subtle, highly elegant upload trigger button that appears on hover */}
-        <button
-          onClick={() => triggerImageUpload(imageKey)}
-          className="absolute top-3 right-3 p-2 bg-white hover:bg-brand-pink text-brand-dark hover:scale-110 transform transition-all duration-200 border-2 border-brand-dark rounded-full shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] opacity-0 group-hover:opacity-100 flex items-center justify-center"
-          title="Upload / Change Photo"
-          id={`btn-upload-${imageKey}`}
-        >
-          <Edit2 className="w-3.5 h-3.5" />
-        </button>
       </div>
     );
   };
