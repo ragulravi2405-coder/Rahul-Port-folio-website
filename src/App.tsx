@@ -419,16 +419,24 @@ const SKILLS_INVENTORY = [
 export default function App() {
   // State for Customizable Images stored in LocalStorage
   const [customImages, setCustomImages] = useState<CustomImages>(() => {
+    const base = { ...(defaultImages as CustomImages) };
     const saved = localStorage.getItem("rahul_portfolio_images");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        return { ...(defaultImages as CustomImages), ...parsed };
+        if (parsed && typeof parsed === "object") {
+          Object.keys(parsed).forEach((key) => {
+            const k = key as keyof CustomImages;
+            if (parsed[k]) {
+              base[k] = parsed[k];
+            }
+          });
+        }
       } catch (e) {
         console.error("Failed to load local portfolio photos:", e);
       }
     }
-    return defaultImages as CustomImages;
+    return base;
   });
 
   // State to control Customize Mode (ON/OFF)
@@ -689,7 +697,9 @@ export default function App() {
     aspectRatioClass?: string;
     roundedClass?: string;
   }) => {
-    const displaySrc = customImages[imageKey];
+    const displaySrc = imageKey === "profile"
+      ? "/profile.jpg"
+      : (customImages[imageKey] || defaultImages[imageKey as keyof typeof defaultImages]);
     const Fallback = SVG_FALLBACKS[imageKey];
 
     return (
