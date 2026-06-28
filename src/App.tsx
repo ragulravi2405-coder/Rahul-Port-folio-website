@@ -285,20 +285,8 @@ const SVG_FALLBACKS = {
   )
 };
 
-// High-quality, professional, realistic fallback images for each portfolio asset
-const DEFAULT_FALLBACK_IMAGES: Record<string, string> = {
-  profile: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-  college: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80",
-  internship: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-  cert_ibm: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80",
-  cert_nim: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80",
-  cert_csc: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80",
-  cert_aws: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80",
-  proj_zentora: "https://images.unsplash.com/photo-1563013544-824ae1d704d3?auto=format&fit=crop&w=800&q=80",
-  proj_globalchat: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
-  proj_docmind: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-  proj_rideeasy: "https://images.unsplash.com/photo-1494783367193-149034c05e8f?auto=format&fit=crop&w=800&q=80"
-};
+// High-quality, professional, realistic fallback images for each portfolio asset are no longer used by default.
+// The app will display custom uploaded photos, falling back beautifully to our branded vector SVG illustrations.
 
 const PROJECTS: Project[] = [
   {
@@ -704,8 +692,7 @@ export default function App() {
     aspectRatioClass?: string;
     roundedClass?: string;
   }) => {
-    const hasImage = !!customImages[imageKey];
-    const displaySrc = hasImage ? customImages[imageKey] : DEFAULT_FALLBACK_IMAGES[imageKey];
+    const displaySrc = customImages[imageKey];
     const Fallback = SVG_FALLBACKS[imageKey];
 
     return (
