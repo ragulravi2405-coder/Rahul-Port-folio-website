@@ -285,6 +285,21 @@ const SVG_FALLBACKS = {
   )
 };
 
+// High-quality, professional, realistic fallback images for each portfolio asset
+const DEFAULT_FALLBACK_IMAGES: Record<string, string> = {
+  profile: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+  college: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80",
+  internship: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+  cert_ibm: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80",
+  cert_nim: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80",
+  cert_csc: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=400&q=80",
+  cert_aws: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80",
+  proj_zentora: "https://images.unsplash.com/photo-1563013544-824ae1d704d3?auto=format&fit=crop&w=800&q=80",
+  proj_globalchat: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
+  proj_docmind: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+  proj_rideeasy: "https://images.unsplash.com/photo-1494783367193-149034c05e8f?auto=format&fit=crop&w=800&q=80"
+};
+
 const PROJECTS: Project[] = [
   {
     id: "zentora",
@@ -475,6 +490,28 @@ export default function App() {
           setCustomImages((prev) => {
             const merged = { ...prev, ...data };
             localStorage.setItem("rahul_portfolio_images", JSON.stringify(merged));
+            
+            // Check if there are any custom photos stored in localStorage that are not on the server yet.
+            // If so, let's sync them to the server so they become visible to everyone!
+            const hasNewLocalImages = Object.keys(prev).some(
+              (key) => prev[key as keyof CustomImages] && !data[key]
+            );
+            
+            if (hasNewLocalImages) {
+              fetch("/api/images", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ images: merged }),
+              })
+                .then((r) => r.json())
+                .then((resData) => {
+                  if (resData.success) {
+                    console.log("Synced local photos to server successfully.");
+                  }
+                })
+                .catch((e) => console.error("Error syncing local photos to server:", e));
+            }
+            
             return merged;
           });
         }
@@ -668,20 +705,35 @@ export default function App() {
     roundedClass?: string;
   }) => {
     const hasImage = !!customImages[imageKey];
+    const displaySrc = hasImage ? customImages[imageKey] : DEFAULT_FALLBACK_IMAGES[imageKey];
     const Fallback = SVG_FALLBACKS[imageKey];
 
     return (
-      <div className={`relative overflow-hidden border-4 border-brand-dark ${aspectRatioClass} ${roundedClass} bg-white shadow-[4px_4px_0px_0px_rgba(26,26,26,1)]`}>
-        {hasImage ? (
+      <div className={`relative group overflow-hidden border-4 border-brand-dark ${aspectRatioClass} ${roundedClass} bg-white shadow-[4px_4px_0px_0px_rgba(26,26,26,1)]`}>
+        {displaySrc ? (
           <img
-            src={customImages[imageKey]}
+            src={displaySrc}
             alt={`Rahul Portfolio - ${imageKey}`}
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-        ) : (
+        ) : Fallback ? (
           <Fallback />
+        ) : (
+          <div className="w-full h-full bg-slate-50 flex items-center justify-center font-mono text-xs text-brand-dark/40">
+            No Image
+          </div>
         )}
+
+        {/* Subtle, highly elegant upload trigger button that appears on hover */}
+        <button
+          onClick={() => triggerImageUpload(imageKey)}
+          className="absolute top-3 right-3 p-2 bg-white hover:bg-brand-pink text-brand-dark hover:scale-110 transform transition-all duration-200 border-2 border-brand-dark rounded-full shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] opacity-0 group-hover:opacity-100 flex items-center justify-center"
+          title="Upload / Change Photo"
+          id={`btn-upload-${imageKey}`}
+        >
+          <Edit2 className="w-3.5 h-3.5" />
+        </button>
       </div>
     );
   };
