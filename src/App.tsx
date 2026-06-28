@@ -671,7 +671,7 @@ export default function App() {
     const Fallback = SVG_FALLBACKS[imageKey];
 
     return (
-      <div className={`relative group overflow-hidden border-4 border-brand-dark ${aspectRatioClass} ${roundedClass} bg-white shadow-sm`}>
+      <div className={`relative overflow-hidden border-4 border-brand-dark ${aspectRatioClass} ${roundedClass} bg-white shadow-[4px_4px_0px_0px_rgba(26,26,26,1)]`}>
         {hasImage ? (
           <img
             src={customImages[imageKey]}
@@ -682,116 +682,38 @@ export default function App() {
         ) : (
           <Fallback />
         )}
-
-        {/* Highlight border when Customizer Mode is active */}
-        {customizeMode && (
-          <div className="absolute inset-0 bg-brand-pink/15 border-4 border-dashed border-brand-pink animate-pulse pointer-events-none" />
-        )}
-
-        {/* Hover / Active Click Trigger */}
-        <button
-          onClick={() => triggerImageUpload(imageKey)}
-          className={`absolute inset-0 bg-brand-dark/45 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col items-center justify-center text-white font-black gap-1.5 ${
-            customizeMode ? "opacity-100 !bg-brand-dark/50" : ""
-          }`}
-          id={`btn-upload-${imageKey}`}
-        >
-          <div className="bg-white p-2 rounded-full text-brand-dark shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] border-2 border-brand-dark">
-            <Edit2 className="w-4 h-4" />
-          </div>
-          <span className="text-[10px] uppercase tracking-wider font-mono bg-brand-dark px-2.5 py-0.5 rounded border-2 border-white">
-            {hasImage ? "Change Photo" : "Upload Photo"}
-          </span>
-        </button>
       </div>
     );
   };
 
   return (
     <div className="min-h-screen bg-[#FDFCF0] text-brand-dark selection:bg-brand-pink/30 selection:text-brand-dark font-sans pb-16">
-      {/* Dynamic top notifications */}
+      {/* Top Navigation Header */}
       <header className="sticky top-4 mx-4 md:mx-8 z-40 bg-white border-4 border-brand-dark rounded-3xl p-4 px-6 md:px-8 shadow-[4px_4px_0px_0px_rgba(26,26,26,1)] md:shadow-[8px_8px_0px_0px_rgba(26,26,26,1)]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 bg-brand-pink border-2 border-brand-dark rounded-full flex items-center justify-center font-black text-lg text-brand-dark shadow-[2px_2px_0px_0px_rgba(26,26,26,1)]">
               R
             </div>
             <div>
-              <h1 className="font-black text-xl tracking-tight leading-none text-brand-dark">RAHUL.DESIGN</h1>
-              <p className="text-[10px] font-mono font-bold text-brand-dark/60 mt-1 uppercase">AI + Full Stack Developer</p>
+              <h1 className="font-black text-xl tracking-tight leading-none text-brand-dark">RAHUL.PORTFOLIO</h1>
+              <p className="text-[10px] font-mono font-bold text-brand-dark/60 mt-1 uppercase">Computer Science Engineer</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 flex-wrap">
-            {/* Customizer Active Status Indicator */}
-            <div className="flex items-center gap-1.5 bg-brand-pink/15 border-2 border-brand-dark px-2.5 py-1 rounded-full text-[12px] font-bold text-brand-dark">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-pink opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-pink"></span>
-              </span>
-              Photo Customizer Active!
-            </div>
-
-            {/* Customizer toggle switch */}
-            <button
-              onClick={() => setCustomizeMode(!customizeMode)}
-              className={`px-3 py-1.5 rounded-xl border-2 border-brand-dark font-black text-[12px] transition-all flex items-center gap-1.5 shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] hover:translate-y-[-1px] ${
-                customizeMode ? "bg-brand-pink text-brand-dark" : "bg-white text-brand-dark"
-              }`}
-              id="btn-toggle-customize"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              {customizeMode ? "Hide Editor" : "Edit Photos"}
-            </button>
-
-            {/* Reset custom photos */}
-            {Object.values(customImages).some((img) => !!img) && (
-              <button
-                onClick={resetAllPhotos}
-                className="p-1.5 rounded-xl border-2 border-brand-dark bg-brand-yellow hover:bg-brand-yellow/90 text-brand-dark shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] text-[12px] font-black flex items-center gap-1"
-                title="Reset photos back to vector illustrations"
-                id="btn-reset-photos"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                Reset Photos
-              </button>
-            )}
-          </div>
+          {/* Clean Navigation Links */}
+          <nav className="flex items-center gap-4 md:gap-6 text-xs md:text-sm font-black text-brand-dark uppercase tracking-wider">
+            <a href="#section-experience" className="hover:text-brand-pink transition-colors">Experience</a>
+            <a href="#section-skills" className="hover:text-brand-blue transition-colors">Skills</a>
+            <a href="#section-projects" className="hover:text-brand-yellow transition-colors">Projects</a>
+            <a href="#section-education" className="hover:text-brand-teal transition-colors">Education</a>
+            <a href="#section-contact" className="hover:text-brand-pink bg-brand-yellow border-2 border-brand-dark px-3 py-1.5 rounded-xl shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] hover:translate-y-[-1px] transition-all">Let's Talk</a>
+          </nav>
         </div>
       </header>
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 md:px-8 mt-10">
-        {/* Playful Instruction Banner for Rahul */}
-        <AnimatePresence>
-          {customizeMode && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mb-8 p-5 bg-brand-yellow border-4 border-brand-dark rounded-3xl shadow-[4px_4px_0px_0px_rgba(26,26,26,1)] md:shadow-[8px_8px_0px_0px_rgba(26,26,26,1)] flex flex-col md:flex-row items-start md:items-center gap-4 text-brand-dark"
-              id="instruction-banner"
-            >
-              <div className="bg-white p-3 rounded-2xl border-2 border-brand-dark shadow-[2px_2px_0px_0px_rgba(26,26,26,1)] flex-shrink-0 text-3xl">
-                📸
-              </div>
-              <div className="flex-grow">
-                <h3 className="font-black text-md">Vanakkam Rahul! Live Picture Customizer Loaded!</h3>
-                <p className="text-sm text-brand-dark/95 mt-1 leading-relaxed font-semibold">
-                  You requested a way to add your own pictures for everything in the website.
-                  I have built a **Live Photo Customizer**! Simply click the ✏️ **Pencil Icon** overlay on top of any image block below (Profile, College, Internship, Certificates, or Projects) to upload your photos. They immediately refresh and save in your browser!
-                </p>
-              </div>
-              <button
-                onClick={() => setCustomizeMode(false)}
-                className="self-end md:self-center px-4 py-2 bg-brand-dark hover:bg-brand-dark/90 text-white font-mono text-xs font-black rounded-full border-2 border-brand-dark shadow-[2px_2px_0px_0px_rgba(255,255,255,0.4)]"
-              >
-                GOT IT
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Hero Section */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch mb-16 pt-4" id="section-hero">
           <div className="md:col-span-5 max-w-sm mx-auto w-full flex">
