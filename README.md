@@ -1,49 +1,20 @@
-# 🚀 Rahul R - Portfolio Website
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-Welcome to my personal portfolio website.
+# Run and deploy your AI Studio app
 
-## 👨‍💻 About Me
+This contains everything you need to run your app locally.
 
-Hi, I'm **Rahul R**, a Full Stack Developer passionate about building modern, responsive, and user-friendly web applications. I enjoy creating real-world projects and continuously learning new technologies.
+View your app in AI Studio: https://ai.studio/apps/ba28da22-1394-4a8a-be0a-d58f7ec99e6d
 
-## 🛠️ Tech Stack
+## Run Locally
 
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- React.js
-- Python
-- Flask
-- Firebase
-- Git & GitHub
-- Vercel / Netlify
+**Prerequisites:**  Node.js
 
-## ✨ Features
 
-- Modern UI/UX
-- Fully Responsive Design
-- About Me Section
-- Skills Section
-- Projects Showcase
-- Certifications
-- Contact Form
-- Social Media Links
-- Smooth Animations
-
-## 📂 Projects
-
-- AI Resume Analyzer
-- Recipe Book Application
-- Personal Habit Tracker
-- Zentora SaaS Platform
-
-## 📬 Contact
-
-- 📧 Email: your-email@example.com
-- 💼 LinkedIn: https://linkedin.com/in/your-profile
-- 💻 GitHub: https://github.com/your-username
-- 🌐 Portfolio: https://your-portfolio.vercel.app
-
-## 📄 License
-
-This project is open source and available under the MIT License.
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

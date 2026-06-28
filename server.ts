@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
+import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 
@@ -10,7 +11,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 
 // Initialize Gemini client if API key is present
 let ai: GoogleGenAI | null = null;
@@ -117,6 +118,47 @@ STRICT ASSISTANT INSTRUCTIONS:
 4. You can speak English, or respond in a helpful Tamil/English blend (Tanglish) if the user asks in Tamil or uses Tanglish (e.g., "enaku zentora project pathi sollu").
 5. If the Gemini API key is missing (simulated mode), you will still respond beautifully as a fallback using preset rules, but here you are powered by Gemini, so give highly structured and styled markdown replies. Use bold text, lists, and spacing to make your answers extremely neat and readable.
 `;
+
+// Path to store uploaded photos persistently on the server side
+const IMAGES_FILE_PATH = path.join(process.cwd(), "uploaded_images.json");
+
+// Helper to read images
+const readUploadedImages = (): Record<string, string> => {
+  try {
+    if (fs.existsSync(IMAGES_FILE_PATH)) {
+      const data = fs.readFileSync(IMAGES_FILE_PATH, "utf-8");
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error("Error reading uploaded images:", error);
+  }
+  return {};
+};
+
+// Helper to write images
+const writeUploadedImages = (images: Record<string, string>) => {
+  try {
+    fs.writeFileSync(IMAGES_FILE_PATH, JSON.stringify(images, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing uploaded images:", error);
+  }
+};
+
+// API endpoint to load custom photos publicly
+app.get("/api/images", (req, res) => {
+  const images = readUploadedImages();
+  res.json(images);
+});
+
+// API endpoint to save custom photos publicly
+app.post("/api/images", (req, res) => {
+  const { images } = req.body;
+  if (!images || typeof images !== "object") {
+    return res.status(400).json({ error: "Invalid images payload." });
+  }
+  writeUploadedImages(images);
+  res.json({ success: true, message: "Images persisted successfully." });
+});
 
 // API endpoint for Portfolio AI Chat
 app.post("/api/chat", async (req, res) => {

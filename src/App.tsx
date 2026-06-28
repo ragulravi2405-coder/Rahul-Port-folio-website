@@ -466,6 +466,38 @@ export default function App() {
     }
   }, [chatHistory, isTyping]);
 
+  // Fetch persistent uploaded photos from server on mount
+  useEffect(() => {
+    fetch("/api/images")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data === "object") {
+          setCustomImages((prev) => {
+            const merged = { ...prev, ...data };
+            localStorage.setItem("rahul_portfolio_images", JSON.stringify(merged));
+            return merged;
+          });
+        }
+      })
+      .catch((err) => console.error("Error loading persistent photos from server:", err));
+  }, []);
+
+  // Helper to persist images to the backend server
+  const saveImagesToServer = (updatedImages: CustomImages) => {
+    fetch("/api/images", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ images: updatedImages }),
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        if (resData.success) {
+          console.log("Images successfully persisted publicly on server.");
+        }
+      })
+      .catch((err) => console.error("Failed to persist photos on server:", err));
+  };
+
   // Handle local picture uploads
   const triggerImageUpload = (key: keyof CustomImages) => {
     const input = document.createElement("input");
@@ -480,6 +512,7 @@ export default function App() {
           const updated = { ...customImages, [key]: base64 };
           setCustomImages(updated);
           localStorage.setItem("rahul_portfolio_images", JSON.stringify(updated));
+          saveImagesToServer(updated);
         };
         reader.readAsDataURL(file);
       }
@@ -505,6 +538,7 @@ export default function App() {
       };
       setCustomImages(empty);
       localStorage.removeItem("rahul_portfolio_images");
+      saveImagesToServer(empty);
     }
   };
 
