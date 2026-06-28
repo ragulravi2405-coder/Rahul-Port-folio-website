@@ -476,7 +476,15 @@ export default function App() {
       .then((data) => {
         if (data && typeof data === "object") {
           setCustomImages((prev) => {
-            const merged = { ...prev, ...data };
+            // Smart merge: Only let server values overwrite local values if the server values are non-empty
+            const merged = { ...prev };
+            Object.keys(data).forEach((key) => {
+              const k = key as keyof CustomImages;
+              if (data[k]) {
+                merged[k] = data[k];
+              }
+            });
+            
             localStorage.setItem("rahul_portfolio_images", JSON.stringify(merged));
             
             // Check if there are any custom photos stored in localStorage that are not on the server yet.
@@ -766,7 +774,7 @@ export default function App() {
                   🌟 Portfolio of Rahul R
                 </span>
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] text-white">
-                  Creative Developer & UX Designer.
+                  AI + Full Stack Developer.
                 </h2>
               </div>
 
