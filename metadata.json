@@ -1,0 +1,6 @@
+{
+  "name": "Rahul R Portfolio",
+  "description": "Professional portfolio website for Rahul R, AI & Full Stack Developer, with an integrated AI assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-brand-pink: #FF85A1;
+  --color-brand-blue: #4EA8DE;
+  --color-brand-yellow: #FFD166;
+  --color-brand-teal: #06D6A0;
+  --color-brand-dark: #1A1A1A;
+}
+
+@layer utilities {
+  /* Vibrant Palette solid shadow utilities */
+  .neo-shadow-sm {
+    box-shadow: 2px 2px 0px 0px rgba(26, 26, 26, 1);
+  }
+  .neo-shadow {
+    box-shadow: 4px 4px 0px 0px rgba(26, 26, 26, 1);
+  }
+  .neo-shadow-lg {
+    box-shadow: 8px 8px 0px 0px rgba(26, 26, 26, 1);
+  }
+  .neo-shadow-xl {
+    box-shadow: 12px 12px 0px 0px rgba(26, 26, 26, 1);
+  }
+  .neo-shadow-purple {
+    box-shadow: 8px 8px 0px 0px rgb(168, 85, 247);
+  }
+  .neo-shadow-brand {
+    box-shadow: 8px 8px 0px 0px #FF85A1;
+  }
+}
+
